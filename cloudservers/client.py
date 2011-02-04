@@ -101,3 +101,15 @@ class CloudServersClient(httplib2.Http):
         query.append(('fresh', str(time.time())))
         query = urllib.urlencode(query)
         return urlparse.urlunsplit((scheme, netloc, path, query, frag))
+
+class CloudServersClientUK(CloudServersClient):
+
+    AUTH_URL = 'https://lon.auth.api.rackspacecloud.com/v1.0'
+
+UNITED_STATES = 'us'
+UNITED_KINGDOM = 'uk'
+
+LOCATIONS = {
+    UNITED_STATES: CloudServersClient,
+    UNITED_KINGDOM: CloudServersClientUK,
+    }

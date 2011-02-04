@@ -11,7 +11,7 @@ from cloudservers.backup_schedules import (BackupSchedule, BackupScheduleManager
         BACKUP_DAILY_H_1400_1600, BACKUP_DAILY_H_1600_1800,
         BACKUP_DAILY_H_1800_2000, BACKUP_DAILY_H_2000_2200,
         BACKUP_DAILY_H_2200_0000)
-from cloudservers.client import CloudServersClient
+from cloudservers.client import LOCATIONS, UNITED_KINGDOM, UNITED_STATES
 from cloudservers.exceptions import (CloudServersException, BadRequest, Unauthorized,
     Forbidden, NotFound, OverLimit)
 from cloudservers.flavors import FlavorManager, Flavor
@@ -37,9 +37,10 @@ class CloudServers(object):
     &c.
     """
     
-    def __init__(self, username, apikey):
+    def __init__(self, username, apikey, location=UNITED_STATES):
+        assert location in LOCATIONS
         self.backup_schedules = BackupScheduleManager(self)
-        self.client = CloudServersClient(username, apikey)
+        self.client = LOCATIONS[location](username, apikey)
         self.flavors = FlavorManager(self)
         self.images = ImageManager(self)
         self.ipgroups = IPGroupManager(self)
