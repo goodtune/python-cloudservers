@@ -40,7 +40,10 @@ class CloudServersClient(httplib2.Http):
             
         resp, body = super(CloudServersClient, self).request(*args, **kwargs)
         if body:
-            body = json.loads(body)
+            try:
+                body = json.loads(body)
+            except ValueError:
+                body = {'error' : {'message' : body}}
         else:
             body = None
 
